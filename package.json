@@ -1,0 +1,10 @@
+{
+  "name": "com.daydream.fsm",
+  "version": "0.0.0",
+  "displayName": "Finite State Machine",
+  "description": "Finite State Machine generic implementation",
+  "rootnamespace": "daydream",
+  "dependencies": {
+    "com.daydream.extensionmethods": "0.0.0",
+  }
+}
