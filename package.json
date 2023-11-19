@@ -5,6 +5,6 @@
   "description": "Finite State Machine generic implementation",
   "rootnamespace": "daydream",
   "dependencies": {
-    "com.daydream.extensionmethods": "0.0.0",
+    "com.daydream.extensionmethods": "0.0.0"
   }
 }
