@@ -3,58 +3,71 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachine<EState> : MonoBehaviour where EState : Enum
+public abstract class StateMachine<EState> : MonoBehaviour where EState : Enum
 {
-    protected Dictionary<EState, State<EState>> states = new Dictionary<EState, State<EState>>();
-    protected EState currentEState;
-    public State<EState> currentState { get { return states[currentEState]; } }
+    protected abstract Dictionary<EState, State<EState>> states { get; }
+    [SerializeField] protected EState _startEState;
+    protected EState _currentEState;
+    //getters and setters
+    public State<EState> currentState { get { return states[_currentEState]; } }
 
-    void Start()
+    public virtual T GetField<T>(string fieldName) where T : struct
     {
-        
+        return default(T);
     }
 
-    void Update()
+    public virtual void SetField<T>(string fieldName, T value) where T : struct
+    {
+        return;
+    }
+
+    protected void Start()
+    {
+        _currentEState = _startEState;
+        currentState.EnterState();
+    }
+
+    protected void Update()
     {
         EState key = currentState.GetNextState();
-        if (key.Equals(currentEState))
+        if (key.Equals(_currentEState))
         {
             currentState.Update();
         }
         else
         {
             currentState.ExitState();
-            currentEState = key;
+            _currentEState = key;
             currentState.EnterState();
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    protected void OnTriggerEnter(Collider other)
     {
         currentState.OnTriggerEnter(other);
     }
 
-    void OnTriggerStay(Collider other)
+    protected void OnTriggerStay(Collider other)
     {
         currentState.OnTriggerStay(other);
     }
 
-    void OnTriggerExit(Collider other)
+    protected void OnTriggerExit(Collider other)
     {
         currentState.OnTriggerExit(other);
     }
 
-    void OnCollisionEnter(Collider other)
+    protected void OnCollisionEnter(Collision other)
     {
         currentState.OnCollisionEnter(other);
     }
 
-    void OnCollisionStay(Collider other)
+    protected void OnCollisionStay(Collision other)
     {
         currentState.OnCollisionStay(other);
     }
 
-    void OnCollisionExit(Collider other)
+    protected void OnCollisionExit(Collision other)
     {
         currentState.OnCollisionExit(other);
     }
