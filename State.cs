@@ -7,11 +7,13 @@ using UnityEngine;
 
 public abstract class State<EState> where EState : Enum
 {
-    public abstract void EnterState();
+    protected StateMachine<EState> _stateMachine;
 
-    public abstract void Update();
+    public virtual void EnterState() { }
 
-    public abstract void ExitState();
+    public virtual void Update() { }
+
+    public virtual void ExitState() { }
 
     public abstract EState GetNextState();
 

@@ -6,38 +6,39 @@ using UnityEngine;
 public abstract class StateMachine<EState> : MonoBehaviour where EState : Enum
 {
     protected abstract Dictionary<EState, State<EState>> states { get; }
-    [SerializeField] protected EState _startEState;
-    protected EState _currentEState;
-    //getters and setters
-    public State<EState> currentState { get { return states[_currentEState]; } }
+    [SerializeField] protected EState _startState;
+    protected EState _currentState;
 
-    public virtual T GetField<T>(string fieldName) where T : struct
+    //getters and setters
+    public State<EState> currentState { get { return states[_currentState]; } }
+
+    public virtual T GetField<T>(string fieldName)
     {
         return default(T);
     }
 
-    public virtual void SetField<T>(string fieldName, T value) where T : struct
+    public virtual void SetField<T>(string fieldName, T value)
     {
         return;
     }
 
     protected void Start()
     {
-        _currentEState = _startEState;
+        _currentState = _startState;
         currentState.EnterState();
     }
 
     protected void Update()
     {
         EState key = currentState.GetNextState();
-        if (key.Equals(_currentEState))
+        if (key.Equals(_currentState))
         {
             currentState.Update();
         }
         else
         {
             currentState.ExitState();
-            _currentEState = key;
+            _currentState = key;
             currentState.EnterState();
         }
     }
