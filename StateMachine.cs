@@ -17,58 +17,73 @@ public abstract class StateMachine<EState> : MonoBehaviour where EState : Enum
         return default(T);
     }
 
-    public virtual void SetField<T>(string fieldName, T value)
+    public virtual void SetField<T>(string fieldName, T value) { }
+
+    private void TransitionState(EState nextState)
     {
-        return;
+        currentState.ExitState();
+        _currentState = nextState;
+        currentState.EnterState();
     }
 
-    protected void Start()
+    protected virtual void Start()
     {
         _currentState = _startState;
         currentState.EnterState();
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
-        EState key = currentState.GetNextState();
-        if (key.Equals(_currentState))
+        EState nextState = currentState.GetNextState();
+        if (nextState.Equals(_currentState))
         {
             currentState.Update();
         }
         else
         {
-            currentState.ExitState();
-            _currentState = key;
-            currentState.EnterState();
+            TransitionState(nextState);
         }
     }
 
-    protected void OnTriggerEnter(Collider other)
+    protected virtual void FixedUpdate()
+    {
+        EState nextState = currentState.GetNextState();
+        if (nextState.Equals(_currentState))
+        {
+            currentState.FixedUpdate();
+        }
+        else
+        {
+            TransitionState(nextState);
+        }
+    }
+
+    protected virtual void OnTriggerEnter(Collider other)
     {
         currentState.OnTriggerEnter(other);
     }
 
-    protected void OnTriggerStay(Collider other)
+    protected virtual void OnTriggerStay(Collider other)
     {
         currentState.OnTriggerStay(other);
     }
 
-    protected void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
         currentState.OnTriggerExit(other);
     }
 
-    protected void OnCollisionEnter(Collision other)
+    protected virtual void OnCollisionEnter(Collision other)
     {
         currentState.OnCollisionEnter(other);
     }
 
-    protected void OnCollisionStay(Collision other)
+    protected virtual void OnCollisionStay(Collision other)
     {
         currentState.OnCollisionStay(other);
     }
 
-    protected void OnCollisionExit(Collision other)
+    protected virtual void OnCollisionExit(Collision other)
     {
         currentState.OnCollisionExit(other);
     }

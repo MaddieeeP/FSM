@@ -9,7 +9,16 @@ public abstract class State<EState> where EState : Enum
 {
     protected StateMachine<EState> _stateMachine;
 
+    public virtual T GetField<T>(string fieldName)
+    {
+        return default(T);
+    }
+
+    public virtual void SetField<T>(string fieldName, T value) { }
+
     public virtual void EnterState() { }
+
+    public virtual void FixedUpdate() { }
 
     public virtual void Update() { }
 
