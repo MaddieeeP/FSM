@@ -19,8 +19,12 @@ public abstract class StateMachine<EState> : MonoBehaviour where EState : Enum
 
     public virtual void SetField<T>(string fieldName, T value) { }
 
-    private void TransitionState(EState nextState)
+    public void TransitionState(EState nextState, bool checkStateChange = false)
     {
+        if (checkStateChange && _currentState.Equals(nextState))
+        {
+            return;
+        }
         currentState.ExitState();
         _currentState = nextState;
         currentState.EnterState();
@@ -34,28 +38,12 @@ public abstract class StateMachine<EState> : MonoBehaviour where EState : Enum
 
     protected virtual void Update()
     {
-        EState nextState = currentState.GetNextState();
-        if (nextState.Equals(_currentState))
-        {
-            currentState.Update();
-        }
-        else
-        {
-            TransitionState(nextState);
-        }
+        currentState.Update();
     }
 
     protected virtual void FixedUpdate()
     {
-        EState nextState = currentState.GetNextState();
-        if (nextState.Equals(_currentState))
-        {
-            currentState.FixedUpdate();
-        }
-        else
-        {
-            TransitionState(nextState);
-        }
+        currentState.FixedUpdate();
     }
 
     protected virtual void OnTriggerEnter(Collider other)

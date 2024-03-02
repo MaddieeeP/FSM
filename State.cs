@@ -11,20 +11,18 @@ public abstract class State<EState> where EState : Enum
 
     public virtual T GetField<T>(string fieldName)
     {
-        return default(T);
+        return default;
     }
 
     public virtual void SetField<T>(string fieldName, T value) { }
 
     public virtual void EnterState() { }
 
-    public virtual void FixedUpdate() { }
+    public virtual void ExitState() { }
 
     public virtual void Update() { }
 
-    public virtual void ExitState() { }
-
-    public abstract EState GetNextState();
+    public virtual void FixedUpdate() { }
 
     public virtual void OnTriggerEnter(Collider other) { }
 
