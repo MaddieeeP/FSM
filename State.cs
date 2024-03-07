@@ -7,8 +7,6 @@ using UnityEngine;
 
 public abstract class State<EState> where EState : Enum
 {
-    protected StateMachine<EState> _stateMachine;
-
     public virtual T GetField<T>(string fieldName)
     {
         return default;
